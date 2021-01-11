@@ -18,7 +18,7 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->double('price', 8, 2);
             $table->bigInteger('discount');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

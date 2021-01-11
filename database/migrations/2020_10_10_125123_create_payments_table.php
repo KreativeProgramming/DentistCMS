@@ -18,7 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->bigInteger('pacient_id')->unsigned();
             $table->text('value');
             $table->foreign('pacient_id')->references('id')->on('pacients');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

@@ -19,7 +19,7 @@ class CreateDebtsTable extends Migration
             $table->date('deadline');
             $table->bigInteger('value');
             $table->foreign('pacient_id')->references('id')->on('pacients');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

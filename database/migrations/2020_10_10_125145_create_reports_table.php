@@ -23,7 +23,7 @@ class CreateReportsTable extends Migration
             $table->text('diagnosis');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('pacient_id')->references('id')->on('pacients');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

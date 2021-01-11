@@ -20,7 +20,7 @@ class CreateBillsTable extends Migration
             $table->date('deadline');
             $table->string('value');
             $table->string('file')->nullable(true);
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

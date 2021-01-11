@@ -19,7 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->date('date');
             $table->string('type');
             $table->boolean('opened');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

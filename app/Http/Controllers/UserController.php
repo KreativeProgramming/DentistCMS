@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use App\Models\Role;
 
 class UserController extends Controller
@@ -17,62 +18,63 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->get();
-        $roles = Role::get();
         return Inertia::render('User/index', [
-            'users' => $users,
-            'roles' => $roles
+            'filters' =>Request::all('search', 'trashed'),
+            'users' => User::orderByName()->with('role')
+                        ->filter(Request::only('search', 'trashed'))
+                        ->paginate(),
+        ]);
+    }
+
+    public function create()
+    {
+        $roles = Role::all();
+        return Inertia::render('User/Create', [
+            'roles' => $roles,
         ]);
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store()
     {
-        $this->validate($request, [
-            'name' => 'required|min:3|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'role_id' => 'required',
-            'color' => 'required',
-        ]);
-        $user = new User;
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = Hash::make($request->input('password'));
-        $user->role_id = $request->input('role_id');
-        $user->color = $request->input('color');
-        $user->save();
-        return redirect(route('user.index'))->with('success', __('messages.user-add'));
+        User::create(
+            Request::validate([
+                'name' => ['required', 'min:3'],
+                'email' => ['required','email','unique:users,email'],
+                'password' => ['required','string','min:6','confirmed'],
+                'role_id' => ['required'],
+                'color' => ['required'],
+            ])
+        );
+        return Redirect::route('user.index')->with('success', __('messages.user-add'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function edit(User $user)
     {
-        $this->validate($request, [
-            'name' => 'required|min:3|string',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
-            'role_id' => 'required',
-            'color' => 'required',
+        $roles = Role::all();
+        return Inertia::render('User/Edit', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role_id' => $user->role_id,
+                'color' => $user->color,
+            ],
+            'roles' => $roles,
         ]);
-        $user = User::find($id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->role_id = $request->input('role_id');
-        $user->color = $request->input('color');
-        $user->save();
-        return redirect(route('user.index'))->with('success', __('messages.user-edit'));
+    }
+
+    public function update(User $user)
+    {
+        $user->update(
+            Request::validate([
+                'name' => ['required', 'min:3'],
+                'email' => ['required','email','unique:users,email,'.$user->id,],
+                'role_id' => ['required'],
+                'color' => ['required'],
+            ])
+        );
+        return Redirect::route('user.index')->with('success', __('messages.user-edit'));
     }
 
     /**
@@ -81,12 +83,25 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
         $user->appointment()->delete();
         $user->visit()->delete();
         $user->delete();
-        return redirect(route('user.index'))->with('success', __('messages.user-delete'));
+        return Redirect::route('user.index')->with('success', __('messages.user-delete'));
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user->restore();
+        return Redirect::route('user.index')->with('success', 'U rikthye Përdoruesi.');
+    }
+
+    public function delete($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user->forceDelete();
+        return Redirect::route('user.index')->with('success', 'Përdoruesi është fshirë përgjithmonë.');
     }
 }

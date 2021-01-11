@@ -29,7 +29,7 @@ class CreateCompanyTable extends Migration
             $table->string('account_2')->nullable();
             $table->string('account_3')->nullable();
             $table->boolean('theme');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

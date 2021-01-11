@@ -23,7 +23,7 @@
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
         <li class="inline-block relative mr-1">
-          <notification-dropdown />
+          <notification-dropdown :notifications="$page.props.notifications" />
         </li>
         <li class="inline-block relative">
           <user-dropdown />
@@ -44,7 +44,7 @@
                 class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
                 to="/"
               >
-                {{ $page.app.name }}
+                {{ $page.props.app.name }}
               </a>
             </div>
             <div class="w-6/12 flex justify-end">
@@ -77,7 +77,7 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('dashboard')"
-              :active="$page.currentRouteName == 'dashboard'"
+              :active="route().current('dashboard')"
             >
               <i class="fas fa-tachometer-alt mr-2 text-sm"></i>
               Dashboard
@@ -87,17 +87,17 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('user.index')"
-              :active="$page.currentRouteName == 'user.index'"
+              :active="route().current('user.index') || route().current('user.create') || route().current('user.edit')"
             >
               <i class="fas fa-user-md mr-2 text-sm"></i>
-              Users
+              Përdoruesit
             </jet-nav-link>
           </li>
 
           <li class="items-center">
             <jet-nav-link
               :href="route('pacient.index')"
-              :active="$page.currentRouteName == 'pacient.index'"
+              :active="route().current('pacient.index')"
             >
               <i class="fas fa-user mr-2 text-sm"></i>
               Pacient
@@ -107,7 +107,7 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('appointment.index')"
-              :active="$page.currentRouteName == 'appointment.index'"
+              :active="route().current('appointment.index')"
             >
               <i class="fas fa-calendar mr-2 text-sm"></i>
               Appointment
@@ -129,7 +129,7 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('dashboard')"
-              :active="$page.currentRouteName == 'dashboard'"
+              :active="route().current('dashboard')"
             >
               Dashboard
             </jet-nav-link>
@@ -138,7 +138,7 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('dashboard')"
-              :active="$page.currentRouteName == 'dashboard'"
+              :active="route().current('dashboard')"
             >
               Dashboard
             </jet-nav-link>
@@ -159,7 +159,7 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('dashboard')"
-              :active="$page.currentRouteName == 'dashboard'"
+              :active="route().current('dashboard')"
             >
               Dashboard
             </jet-nav-link>
@@ -168,109 +168,10 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('dashboard')"
-              :active="$page.currentRouteName == 'dashboard'"
+              :active="route().current('dashboard')"
             >
               Dashboard
             </jet-nav-link>
-          </li>
-        </ul>
-
-        <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Documentation
-        </h6>
-        <!-- Navigation -->
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/vue/colors/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fas fa-paint-brush mr-2 text-gray-400 text-base"></i>
-              Styles
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/vue/alerts/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fab fa-css3-alt mr-2 text-gray-400 text-base"></i>
-              CSS Components
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/angular/overview/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fab fa-angular mr-2 text-gray-400 text-base"></i>
-              Angular
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/js/overview/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fab fa-js-square mr-2 text-gray-400 text-base"></i>
-              Javascript
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/overview/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fab fa-react mr-2 text-gray-400 text-base"></i>
-              NextJS
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fab fa-react mr-2 text-gray-400 text-base"></i>
-              React
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/svelte/overview/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fas fa-link mr-2 text-gray-400 text-base"></i>
-              Svelte
-            </a>
-          </li>
-
-          <li class="inline-flex">
-            <a
-              href="https://www.creative-tim.com/learning-lab/tailwind/vue/overview/notus"
-              target="_blank"
-              class="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-            >
-              <i class="fab fa-vuejs mr-2 text-gray-400 text-base"></i>
-              VueJS
-            </a>
           </li>
         </ul>
       </div>
@@ -286,6 +187,7 @@ import JetNavLink from "./../../Jetstream/NavLink";
 import JetApplicationMark from "./../../Jetstream/ApplicationMark";
 
 export default {
+  props: ["notifications"],
   data() {
     return {
       collapseShow: "hidden",

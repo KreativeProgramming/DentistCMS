@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
 use App\Models\Visit;
 use App\Models\Appointment;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 
 class User extends Authenticatable
@@ -21,6 +22,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +33,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'color',
+        'role_id',
     ];
 
     /**
@@ -73,23 +77,9 @@ class User extends Authenticatable
         return $this->hasMany(Appointment::class);
     }
 
-
-
     public function role()
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public static function getUser($id)
-    {
-        $user = User::find($id);
-        return $user->name;
-    }
-
-    public static function getUserColor($id)
-    {
-        $user = User::find($id);
-        return $user->color;
     }
 
     public static function getLogo()
@@ -119,16 +109,6 @@ class User extends Authenticatable
             return $company->theme;
     }
 
-    public function getRoleAttribute()
-    {
-        return $this->role->name;
-    }
-
-    public function getPictureAttribute()
-    {
-        return $this->profile_photo_url;
-    }
-
     public function hasPermission($perm)
     {
         $role = Role::find($this->role_id);
@@ -143,5 +123,26 @@ class User extends Authenticatable
     {
         $role = User::where('role_id', '=', $id)->count();
         return $role;
+    }
+
+    public function scopeOrderByName($query)
+    {
+        $query->orderBy('name');
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
+            });
+        })->when($filters['trashed'] ?? null, function ($query, $trashed) {
+            if ($trashed === 'with') {
+                $query->withTrashed();
+            } elseif ($trashed === 'only') {
+                $query->onlyTrashed();
+            }
+        });
     }
 }

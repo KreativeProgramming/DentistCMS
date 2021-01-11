@@ -31,7 +31,7 @@
         y="150"
         size="30px"
       >
-        {{ $page.app.name }}
+        {{ $page.props.app.name }}
       </text>
     </svg>
   </div>

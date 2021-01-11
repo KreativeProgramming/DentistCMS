@@ -19,7 +19,7 @@ class CreateServiceTreatmentTable extends Migration
             $table->foreign('treatment_id')->references('id')->on('treatments');
             $table->bigInteger('service_id')->unsigned();
             $table->foreign('service_id')->references('id')->on('services');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

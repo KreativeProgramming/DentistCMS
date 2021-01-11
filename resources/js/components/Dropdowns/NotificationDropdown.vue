@@ -10,42 +10,22 @@
       <span
         id="not-number"
         class="bg-red-700 absolute top-0 right-0 text-white rounded px-1 pt-0 pb-0 text-xs"
-        >1</span
+        >{{ notifications.length }}</span
       >
     </a>
     <div
       ref="popoverDropdownRef"
-      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg w-48"
       v-bind:class="{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
       }"
     >
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Another action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Something else here
-      </a>
-      <div class="h-0 my-2 border border-solid border-gray-200" />
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Seprated link
-      </a>
+      <ul class="list-disc">
+        <li v-for="not in notifications" :key="not.id">
+          {{ not.description }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -53,7 +33,7 @@
 import { createPopper } from "@popperjs/core";
 
 export default {
-  props: ["color"],
+  props: ["color", "notifications"],
 
   computed: {
     classes() {

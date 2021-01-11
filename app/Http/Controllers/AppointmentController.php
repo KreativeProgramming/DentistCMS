@@ -58,7 +58,7 @@ class AppointmentController extends Controller
         $pacient = Pacient::find($request->input('pacient_id'));
         $notifications = new Notification;
         $notifications->type = 'termin-' . $appointment->id;
-        $notifications->description = $pacient->first_name . ' ' . $pacient->last_name . ' ka terminin për ditën e nesërme në ora ' . $appointment->time_of_appointment . '.';
+        $notifications->description = $pacient->name .' ka terminin për ditën e nesërme në ora ' . $appointment->time_of_appointment . '.';
         $notifications->date = $request->input('date_of_appointment');
         $notifications->opened = false;
         $notifications->save();
@@ -97,11 +97,12 @@ class AppointmentController extends Controller
         $appointment->time_of_appointment = $request->input('time_of_appointment');
         $appointment->save();
         if (!empty($notifications)) {
-            $notifications->description = $pacient->first_name . ' ' . $pacient->last_name . ' ka terminin për ditën e nesërme në ora ' . $appointment->time_of_appointment . '.';
+            $notifications->description = $pacient->name. ' ka terminin për ditën e nesërme në ora ' . $appointment->time_of_appointment . '.';
             $notifications->date =  $request->input('date_of_appointment');
             $notifications->opened = false;
             $notifications->save();
         }
+        return redirect(route('appointment.index'))->with('success', __('messages.appointment-edit'));
     }
 
     /**
@@ -112,6 +113,13 @@ class AppointmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $appointment = Appointment::find($id);
+        $pacient = Pacient::find($appointment->pacient_id);
+        $notifications = Notification::where('type', '=', 'termin-' . $appointment->id)->first();
+        if (!empty($notifications)) {
+            $notifications->delete();
+        }
+        $appointment->delete();
+        return redirect(route('appointment.index'))->with('success', __('messages.appointment-delete'));
     }
 }

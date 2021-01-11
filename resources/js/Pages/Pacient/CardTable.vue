@@ -4,8 +4,9 @@
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
-        <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-          <h3 class="font-semibold text-lg text-gray-800 inline">Pacient</h3>
+            <h3 class="font-semibold text-lg text-gray-800 ">Pacientët</h3><br>
+        <div class="relative w-full px-4 max-w-full flex-grow flex-1 float-left">
+          
           <button
             @click="openModal()"
             class="float-right ml-auto inline bg-green-500 text-white active:bg-green-700 hover:bg-green-600 hover:text-gray-200 justify-center rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium shadow-sm focus:outline-none focus:border-green-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
@@ -14,25 +15,23 @@
           </button>
         </div>
       </div>
-    </div>
+        <search-filter v-model="searchForm.search" class=" max-w-sm mr-auto inline">
+                <select v-model="searchForm.trashed"    class="px-3 py-1 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full mr-1">
+                <option :value="null" >Filtro</option>
+                <option value="with">Edhe të fshirë</option>
+                <option value="only">Vetëm të fshirë &nbsp;</option>
+                </select>
+            </search-filter>
+    </div> 
     <div class="block w-full overflow-x-auto">
+
       <table class="items-center w-full bg-transparent border-collapse">
         <thead>
           <tr>
             <th
               class="px-6 align-middle border border-solid py-3 text-xs bg-gray-100 text-gray-600 border-gray-200 uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
             >
-              Emri (Emri i Prindit) Mbiemri
-            </th>
-            <th
-              class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-            >
-              Numri Personal
-            </th>
-            <th
-              class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-            >
-              Data e lindjes
+              Pacienti
             </th>
             <th
               class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
@@ -42,13 +41,7 @@
             <th
               class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
             >
-              Qyteti
-            </th>
-            <th
-              class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-            >
-              Telefoni
-            </th>
+              Kontakti  
             <th
               class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
             >
@@ -57,232 +50,171 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="pacient in pacients" :key="pacient.id">
+          <tr v-for="pacient in pacients.data" :key="pacient.id">
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+
+              class="border-t-0 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
             >
-              <i
-                v-show="pacient.gender == 'M' || pacient.gender == 'm'"
-                class="fa fa-mars"
-              ></i>
-              <i
-                v-show="pacient.gender == 'F' || pacient.gender == 'f'"
-                class="fa fa-venus"
-              ></i>
-              {{ pacient.first_name }} {{ pacient.fathers_name }}
-              {{ pacient.last_name }}
+            <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                      <svg :class="[
+                                        pacient.deleted_at === null
+                                         ? 'border-gray-700'
+                                          : 'border-red-500',
+                                      ]"  v-if="pacient.gender == 'F'" class="h-12 w-12 bg-white rounded-full border-2 object-cover  p-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+                                        <path style="fill: #374151; stroke-width: 0.683348" d="M128 0c35.346 0 64 28.654 64 64s-28.654 64-64 64c-35.346 0-64-28.654-64-64S92.654 0 128 0m119.283 354.179l-48-192A24 24 0 0 0 176 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H80a24 24 0 0 0-23.283 18.179l-48 192C4.935 369.305 16.383 384 32 384h56v104c0 13.255 10.745 24 24 24h32c13.255 0 24-10.745 24-24V384h56c15.591 0 27.071-14.671 23.283-29.821z"/></svg>
+                     <svg :class="[
+                                        pacient.deleted_at === null
+                                          ? 'border-gray-700'
+                                          : 'border-red-500',
+                                      ]" v-else class="h-12 w-12 bg-white rounded-full border-2 object-cover  p-1  "  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512">
+                                      <path style="fill: #374151; stroke-width: 0.683348" d="M96 0c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64S60.654 0 96 0m48 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H48c-26.51 0-48 21.49-48 48v136c0 13.255 10.745 24 24 24h16v136c0 13.255 10.745 24 24 24h64c13.255 0 24-10.745 24-24V352h16c13.255 0 24-10.745 24-24V192c0-26.51-21.49-48-48-48z"/></svg>
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-bold text-gray-700">
+                       {{ pacient.name}} <i v-if="pacient.deleted_at !== null" class="fa fa-trash text-red-500"></i>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                     {{pacient.personal_number}}
+                    </div>
+                     <div class="text-xs text-gray-500">
+                     {{pacient.date_of_birth }}
+                    </div>
+                  </div>
+                </div>
             </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
-            >
-              {{ pacient.personal_number }}
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
-            >
-              {{ pacient.date_of_birth }}
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
-            >
-              {{ pacient.address }}
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
-            >
-              {{ pacient.city }}
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
-            >
-              {{ pacient.phone }}
-            </td>
+              <td class=" py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-gray-700">{{ pacient.address }}</div>
+                <div class="text-sm text-gray-500">{{pacient.residence}},{{pacient.city}}</div>
+              </td>
+             <td class=" py-4 whitespace-nowrap">
+                <div class="text-sm  font-bold text-gray-700">{{ pacient.phone }}</div>
+                <div class="text-sm text-gray-500">{{pacient.email}}</div>
+              </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-right"
             >
+
               <button
+                v-show="pacient.deleted_at == null"
                 class="bg-blue-500 text-white active:bg-blue-700 hover:bg-blue-600 hover:text-gray-200 justify-center rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium shadow-sm focus:outline-none focus:border-blue-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
                 type="button"
                 v-on:click="edit(pacient)"
               >
                 <i class="fa fas fa-pen"></i>
               </button>
-              <button
+
+              <button v-if="pacient.deleted_at != null"
+                   class="bg-green-500 text-white active:bg-green-700 hover:bg-green-600 hover:text-gray-200 justify-center rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium shadow-sm focus:outline-none focus:border-blue-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                    type="button"
+                    v-on:click="restore(pacient)"> <i class="fa fas fa-trash-restore"></i> </button>
+              <button v-else
                 @click="deletePacient(pacient)"
                 class="bg-red-500 text-white active:bg-red-700 hover:bg-red-600 hover:text-gray-200 justify-center rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium shadow-sm focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
                 type="button"
               >
                 <i class="fa fas fa-trash"></i>
               </button>
-              <div
-                class="fixed z-10 inset-0 overflow-y-auto"
-                :class="{
-                  hidden: !modalShow,
-
-                  block: modalShow,
-                }"
+                <button
+                v-show="pacient.deleted_at != null"
+                class="bg-red-500 text-white active:bg-red-700 hover:bg-red-600 hover:text-gray-200 justify-center rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium shadow-sm focus:outline-none focus:border-blue-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                type="button"
+                v-on:click="deletePermn(pacient)"
               >
-                <transition
-                  enter-active-class="ease-out duration-300"
-                  enter-class="opacity-0"
-                  enter-to-class="opacity-100"
-                  leave-active-class="ease-in duration-200"
-                  leave-class="opacity-100"
-                  leave-to-class="opacity-0"
-                >
-                  <div
-                    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
-                  >
-                    <div class="fixed inset-0 transition-opacity">
-                      <div
-                        class="absolute inset-0 bg-gray-500 opacity-75"
-                      ></div>
-                    </div>
-
-                    <!-- This element is to trick the browser into centering the modal contents. -->
-                    <span
-                      class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                    ></span
-                    >&#8203;
-
-                    <transition
-                      enter-active-class="ease-out duration-300"
-                      enter-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                      enter-to-class="opacity-100 translate-y-0 sm:scale-100"
-                      leave-active-class="ease-in duration-200 "
-                      leave-class="opacity-100 translate-y-0 sm:scale-100"
-                      leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    >
-                      <div
-                        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-2xl"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-labelledby="modal-headline"
-                      >
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                          <div class="sm:flex sm:items-center">
-                            <div class="w-full mt-3 text-center sm:text-left">
-                              <h1
-                                class="block uppercase tracking-wide text-gray-700 text-xl text-center font-bold mb-4"
-                              >
-                                Shto Pacient
-                              </h1>
-                              <form class="w-full">
+                <i class="fa fas fa-ban"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <large-modal  v-if="modalShow">
+               <template #header >  
+                <h1 v-if="editMode" class="block uppercase tracking-wide text-gray-700 text-xl text-center font-bold mb-4">Ndrysho Pacient</h1> 
+                 <h1 v-else class="block uppercase tracking-wide text-gray-700 text-xl text-center font-bold mb-4">Shto Pacient</h1> 
+               </template>
+                 <template #footer > 
+                 <span
+                            class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"
+                          >
+                            <button
+                              v-show="editMode"
+                              @click="update(form)"
+                              type="button"
+                              :disabled="$v.form.$invalid"
+                              :class="[
+                                $v.form.$invalid == false
+                                  ? 'bg-green-600 focus:border-green-700 hover:bg-green-500'
+                                  : 'bg-green-500 opacity-50 cursor-not-allowed',
+                              ]"
+                              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                            >
+                              Ndrysho
+                            </button>
+                            <button
+                              v-show="!editMode"
+                              @click="save(form)"
+                              type="button"
+                              :disabled="$v.form.$invalid"
+                              :class="[
+                                $v.form.$invalid == false
+                                  ? 'bg-blue-600 focus:border-blue-700 hover:bg-blue-500'
+                                  : 'bg-blue-500 opacity-50 cursor-not-allowed',
+                              ]"
+                              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium text-white shadow-sm focus:outline-none focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                            >
+                              Ruaj
+                            </button>
+                          </span>
+                          <span
+                            class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto"
+                          >
+                            <button
+                              type="button"
+                              class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                              v-on:click="closeModal()"
+                            >
+                              Anulo
+                            </button>
+                          </span>
+                         
+                         </template>
+                        <form class="max-w-6xl w-full">
                                 <div class="flex flex-wrap -mx-3 mb-6">
                                   <div
-                                    class="w-full md:w-1/2 px-3 mb-6 md:mb-0"
+                                    class="w-full sm:w-1/2 px-3 mb-6 md:mb-0"
                                   >
                                     <label
                                       class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                      for="grid-first-name"
+                                      for="grid-name"
                                     >
                                       Emri
                                     </label>
                                     <input
                                       :class="[
-                                        $v.form.first_name.$invalid === true
+                                        $v.form.name.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                      id="grid-first-name"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
+                                      id="grid-name"
                                       type="text"
                                       placeholder="Emri"
-                                      name="first_name"
-                                      v-model="form.first_name"
+                                      name="name"
+                                      v-model="form.name"
                                     />
                                     <p
-                                      v-if="!$v.form.first_name.required"
+                                      v-if="!$v.form.name.required"
                                       class="text-red-500 text-xs italic"
                                     >
                                       Fusha është e zbrazët.
                                     </p>
                                     <p
-                                      v-if="!$v.form.first_name.minLength"
+                                      v-if="!$v.form.name.minLength"
                                       class="text-red-500 text-xs italic"
                                     >
                                       Fusha duhet të ketë së paku
                                       {{
-                                        $v.form.first_name.$params.minLength.min
-                                      }}
-                                      shkronja.
-                                    </p>
-                                  </div>
-                                  <div class="w-full md:w-1/2 px-3">
-                                    <label
-                                      class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                      for="grid-last-name"
-                                    >
-                                      Mbiemri
-                                    </label>
-                                    <input
-                                      :class="[
-                                        $v.form.last_name.$invalid === true
-                                          ? 'border-red-500'
-                                          : 'border-grey-200',
-                                      ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                      id="grid-last-name"
-                                      type="text"
-                                      placeholder="Mbiemri"
-                                      name="last_name"
-                                      v-model="form.last_name"
-                                    />
-                                    <p
-                                      v-if="!$v.form.last_name.required"
-                                      class="text-red-500 text-xs italic"
-                                    >
-                                      Fusha është e zbrazët.
-                                    </p>
-                                    <p
-                                      v-if="!$v.form.last_name.minLength"
-                                      class="text-red-500 text-xs italic"
-                                    >
-                                      Fusha duhet të ketë së paku
-                                      {{
-                                        $v.form.last_name.$params.minLength.min
-                                      }}
-                                      shkronja.
-                                    </p>
-                                  </div>
-                                </div>
-                                <div class="flex flex-wrap -mx-3 mb-6">
-                                  <div
-                                    class="w-full md:w-1/2 px-3 mb-6 md:mb-0"
-                                  >
-                                    <label
-                                      class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                      for="grid-fathers-name"
-                                    >
-                                      Emri i prindit
-                                    </label>
-                                    <input
-                                      :class="[
-                                        $v.form.fathers_name.$invalid === true
-                                          ? 'border-red-500'
-                                          : 'border-grey-200',
-                                      ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                      id="grid-fathers-name"
-                                      type="text"
-                                      placeholder="Emri i prindi"
-                                      name="fathers_name"
-                                      v-model="form.fathers_name"
-                                    />
-                                    <p
-                                      v-if="!$v.form.fathers_name.required"
-                                      class="text-red-500 text-xs italic"
-                                    >
-                                      Fusha është e zbrazët.
-                                    </p>
-                                    <p
-                                      v-if="!$v.form.fathers_name.minLength"
-                                      class="text-red-500 text-xs italic"
-                                    >
-                                      Fusha duhet të ketë së paku
-                                      {{
-                                        $v.form.fathers_name.$params.minLength
-                                          .min
+                                        $v.form.name.$params.minLength.min
                                       }}
                                       shkronja.
                                     </p>
@@ -299,9 +231,9 @@
                                         $v.form.personal_number.$invalid ===
                                         true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-personal-number"
                                       type="text"
                                       placeholder="Numri Personal"
@@ -343,9 +275,9 @@
                                       :class="[
                                         $v.form.date_of_birth.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-date-of-birth"
                                       type="date"
                                       placeholder="Data e lindjes"
@@ -403,9 +335,9 @@
                                       :class="[
                                         $v.form.address.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-address"
                                       type="text"
                                       placeholder="Adresa"
@@ -444,9 +376,9 @@
                                       :class="[
                                         $v.form.residence.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-residence"
                                       type="text"
                                       placeholder="Vendbanimi"
@@ -481,9 +413,9 @@
                                       :class="[
                                         $v.form.city.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-city"
                                       type="text"
                                       placeholder="Qyteti"
@@ -520,9 +452,9 @@
                                       :class="[
                                         $v.form.phone.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-phone"
                                       type="text"
                                       placeholder="Nr Telefonit"
@@ -561,9 +493,9 @@
                                       :class="[
                                         $v.form.email.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-email"
                                       type="email"
                                       placeholder="E-mail"
@@ -585,66 +517,8 @@
                                   </div>
                                 </div>
                               </form>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
-                        >
-                          <span
-                            class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"
-                          >
-                            <button
-                              v-show="editMode"
-                              @click="update(form)"
-                              type="button"
-                              :disabled="$v.form.$invalid"
-                              :class="[
-                                $v.form.$invalid == false
-                                  ? 'bg-green-600 focus:border-green-700 hover:bg-green-500'
-                                  : 'bg-green-500 opacity-50 cursor-not-allowed',
-                              ]"
-                              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                            >
-                              Ndrysho
-                            </button>
-                            <button
-                              v-show="!editMode"
-                              @click="save(form)"
-                              type="button"
-                              :disabled="$v.form.$invalid"
-                              :class="[
-                                $v.form.$invalid == false
-                                  ? 'bg-blue-600 focus:border-blue-700 hover:bg-blue-500'
-                                  : 'bg-blue-500 opacity-50 cursor-not-allowed',
-                              ]"
-                              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium text-white shadow-sm focus:outline-none focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                            >
-                              Ruaj
-                            </button>
-                          </span>
-                          <span
-                            class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto"
-                          >
-                            <button
-                              type="button"
-                              class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                              v-on:click="closeModal()"
-                            >
-                              Cancel
-                            </button>
-                          </span>
-                        </div>
-                      </div>
-                    </transition>
-                  </div>
-                </transition>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </large-modal>
+      <pagination :links="pacients.links" />
     </div>
   </div>
 </template>
@@ -656,46 +530,58 @@ import {
   maxLength,
   email,
 } from "vuelidate/lib/validators";
+import Pagination from "./../../components/Pagination/Pagination.vue";
+import SearchFilter from "./../../components/Search/SearchFilter.vue";
+import LargeModal from "./../../components/Modals/LargeModal.vue";
+import pickBy from 'lodash/pickBy';
+import throttle from 'lodash/throttle';
 
 export default {
-  props: ["sessions", "pacients"],
+    components: {
+        Pagination,
+        SearchFilter,
+        LargeModal,
+  },
+  props: {
+    pacients: Object,
+    filters: Object,
+  },
   data() {
     return {
       modalShow: false,
       editMode: false,
-      form: this.$inertia.form(
-        {
-          first_name: this.first_name,
-          fathers_name: this.fathers_name,
-          last_name: this.last_name,
-          personal_number: this.personal_number,
-          gender: this.gender,
-          date_of_birth: this.date_of_birth,
-          address: this.address,
-          residence: this.residence,
-          city: this.city,
-          phone: this.phone,
-          email: this.email,
-        },
-        {
-          bag: "updateProfileInformation",
-          resetOnSuccess: true,
-        }
-      ),
+      sending: false,
+      searchForm:{
+            search: this.filters.search,
+            trashed: this.filters.trashed,
+      },
+      form: 
+      {
+        name: this.name,
+        personal_number: this.personal_number,
+        gender: this.gender,
+        date_of_birth: this.date_of_birth,
+        address: this.address,
+        residence: this.residence,
+        city: this.city,
+        phone: this.phone,
+        email: this.email,
+      },
       formValidated: false,
     };
   },
+   watch: {
+    searchForm: {
+      handler: throttle(function() {
+        let query = pickBy(this.searchForm)
+        this.$inertia.replace(this.route('pacient.index', Object.keys(query).length ? query : { remember: 'forget' }))
+      }, 150),
+      deep: true,
+    },
+  },
   validations: {
     form: {
-      first_name: {
-        required,
-        minLength: minLength(3),
-      },
-      fathers_name: {
-        required,
-        minLength: minLength(3),
-      },
-      last_name: {
+      name: {
         required,
         minLength: minLength(3),
       },
@@ -743,11 +629,9 @@ export default {
       this.editMode = false;
       this.reset();
     },
-    reset: function () {
+    reset() {
       this.form = {
-        first_name: null,
-        fathers_name: null,
-        last_name: null,
+        name: null,
         personal_number: null,
         gender: null,
         date_of_birth: null,
@@ -759,33 +643,45 @@ export default {
       };
     },
     submitForm() {},
-    save: function (data) {
+    save(data) {
       if (this.$v.form.$invalid) {
         alert("Form is not valid");
       } else {
-        this.$inertia.post("/pacient", data).then(() => {
-          this.reset();
-          this.closeModal();
-        });
+        this.$inertia.post(this.route('pacient.store'), this.form, {
+          onStart: () => this.sending = true,
+          onFinish: () => this.sending = false,
+        })
+        this.reset();
+        this.closeModal();
       }
     },
-    edit: function (data) {
+    edit (data) {
       this.form = Object.assign({}, data);
       this.editMode = true;
       this.openModal();
     },
-    update: function (data) {
-      if (!confirm("Sure")) return;
-      data._method = "PUT";
-      this.$inertia.post("/pacient/" + data.id, data);
+    update (data) {
+      if (!confirm("A jeni i sigurtë që dëshironi të ndryshoni pacientin?")) return;
+       this.$inertia.put(this.route('pacient.update', data.id), this.form, {
+        onStart: () => this.sending = true,
+        onFinish: () => this.sending = false,
+      })
       this.reset();
       this.closeModal();
     },
-    deletePacient: function (data) {
-      if (!confirm("Sure")) return;
-      data._method = "DELETE";
-      this.$inertia.post("/pacient/" + data.id, data);
-      this.closeModal();
+    deletePacient(data) {
+      if (!confirm("A jeni i sigurtë që dëshironi të fshini pacientin?")) return;
+      this.$inertia.delete(this.route('pacient.destroy', data.id))
+    },
+    restore(data) {
+      if (confirm('A jeni i sigurtë që dëshironi të riktheni pacientin?')) {
+        this.$inertia.put(this.route('pacient.restore', data.id))
+      }
+    },
+    deletePermn(data) {
+      if (confirm('A jeni i sigurtë që dëshironi të fshini pacientin përgjithmonë?')) {
+        this.$inertia.put(this.route('pacient.delete', data.id))
+      }
     },
   },
 };

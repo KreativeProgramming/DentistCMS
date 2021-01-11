@@ -21,7 +21,7 @@ class CreateVisitsTable extends Migration
             $table->string('time_of_visit');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('pacient_id')->references('id')->on('pacients');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

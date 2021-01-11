@@ -2,27 +2,7 @@
   <div
     class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white"
   >
-    <div
-      v-if="$page.errors.date_of_appointment"
-      class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-      role="alert"
-    >
-      <strong class="font-bold">Error!</strong>
-      <span class="block sm:inline"
-        >{{ $page.errors.date_of_appointment[0] }}.</span
-      >
-    </div>
 
-    <div
-      v-if="$page.errors.time_of_appointment"
-      class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-      role="alert"
-    >
-      <strong class="font-bold">Error!</strong>
-      <span class="block sm:inline"
-        >{{ $page.errors.time_of_appointment[0] }}.</span
-      >
-    </div>
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -74,8 +54,21 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
             >
-              {{ appointment.pacient.first_name }}
-              {{ appointment.pacient.last_name }}
+              <i
+                v-show="
+                  appointment.pacient.gender == 'M' ||
+                  appointment.pacient.gender == 'm'
+                "
+                class="fa fa-mars"
+              ></i>
+              <i
+                v-show="
+                  appointment.pacient.gender == 'F' ||
+                  appointment.pacient.gender == 'f'
+                "
+                class="fa fa-venus"
+              ></i>
+              {{ appointment.pacient.name }}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left flex items-center"
@@ -186,7 +179,7 @@
                                             ? 'border-red-500'
                                             : 'border-grey-200',
                                         ]"
-                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
                                         id="grid-pacient_id"
                                         name="pacient_id"
                                         v-model="form.pacient_id"
@@ -196,8 +189,8 @@
                                           :key="pacient.id"
                                           :value="pacient.id"
                                         >
-                                          {{ pacient.first_name }}
-                                          {{ pacient.last_name }}
+                                          {{ pacient.name }}
+                  
                                         </option>
                                       </select>
                                       <p
@@ -235,7 +228,7 @@
                                             ? 'border-red-500'
                                             : 'border-grey-200',
                                         ]"
-                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
                                         id="grid-user_id"
                                         name="user_id"
                                         v-model="form.user_id"
@@ -318,12 +311,12 @@
                                             ? 'border-red-500'
                                             : 'border-grey-200',
                                         ]"
-                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
                                         id="grid-time_of_appointment"
                                         name="time_of_appointment"
                                         v-model="form.time_of_appointment"
                                       >
-                                        <option>08:00</option>
+                                        <option selected>08:00</option>
                                         <option>08:30</option>
                                         <option>09:00</option>
                                         <option>09:30</option>
@@ -438,9 +431,11 @@
 </template>
 <script>
 import { required } from "vuelidate/lib/validators";
+import RedAlert from "./../../components/Alerts/RedAlert.vue";
 
 export default {
   props: ["users", "pacients", "appointments"],
+  components: { RedAlert },
   data() {
     return {
       modalShow: false,

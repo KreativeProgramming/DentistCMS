@@ -21,7 +21,7 @@ class CreatePaymentServiceTable extends Migration
             $table->foreign('service_id')->references('id')->on('services');
             $table->string('tooth');
             $table->string('discount');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

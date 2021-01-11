@@ -20,7 +20,7 @@ class CreateTreatmentsTable extends Migration
             $table->string('duration')->nullable(true);
             $table->string('file')->nullable(true);
             $table->foreign('pacient_id')->references('id')->on('pacients');
-            $table->timestamps();
+            $table->timestamps(); $table->softDeletes();
         });
     }
 

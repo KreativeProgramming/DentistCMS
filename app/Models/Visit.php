@@ -31,6 +31,6 @@ class Visit extends Model
     {
         $visit = Visit::find($id);
         $pacient = Pacient::find($visit->pacient_id);
-        return $pacient->first_name . ' ' . $pacient->last_name;
+        return $pacient->name;
     }
 }

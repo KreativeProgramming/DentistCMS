@@ -2,93 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use App\Models\Pacient;
-
 
 class PacientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $pacients = Pacient::all();
-        return Inertia::render('Pacient/index', ['pacients' => $pacients]);
+        return Inertia::render('Pacient/index', [
+            'filters' =>Request::all('search', 'trashed'),
+            'pacients' => Pacient::orderByName()
+                        ->filter(Request::only('search', 'trashed'))
+                        ->paginate(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store()
     {
-        $this->validate($request, [
-            'first_name' => 'required|min:3',
-            'fathers_name' => 'required|min:3',
-            'last_name' => 'required|min:3',
-            'personal_number' => 'required|digits:10|numeric',
-            'date_of_birth' => 'required|date',
-            'address' => 'required|min:2',
-            'residence' => 'required|min:2',
-            'city' => 'required|min:2',
-            'phone' => 'required|min:9|numeric',
-        ]);
-        $pacient = new Pacient;
-        $pacient->first_name = $request->input('first_name');
-        $pacient->fathers_name = $request->input('fathers_name');
-        $pacient->last_name = $request->input('last_name');
-        $pacient->personal_number = $request->input('personal_number');
-        $pacient->date_of_birth = $request->input('date_of_birth');
-        $pacient->gender = $request->input('gender');
-        $pacient->address = $request->input('address');
-        $pacient->residence = $request->input('residence');
-        $pacient->city = $request->input('city');
-        $pacient->phone = $request->input('phone');
-        $pacient->email = $request->input('email');
-        $pacient->save();
-        return redirect(route('pacient.index'))->with('success', __('messages.patient-add'));
+        Pacient::create(
+            Request::validate([
+                'name' => ['required', 'min:3'],
+                'personal_number' => ['required', 'digits:10','numeric', 'unique:pacients'],
+                'date_of_birth' => ['required', 'date'],
+                'address' => ['required', 'min:2'],
+                'residence' => ['required', 'min:2'],
+                'city' => ['required', 'min:2'],
+                'phone' => ['required', 'min:9','numeric'],
+                'email' => ['required','email'],
+                'gender' => ['required'],
+            ])
+        );
+        return Redirect::back()->with('success', __('messages.patient-add'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Pacient $pacient)
     {
-        $this->validate($request, [
-            'first_name' => 'required|min:3',
-            'fathers_name' => 'required|min:3',
-            'last_name' => 'required|min:3',
-            'personal_number' => 'required|digits:10|numeric',
-            'date_of_birth' => 'required|date',
-            'address' => 'required|min:2',
-            'residence' => 'required|min:2',
-            'city' => 'required|min:2',
-            'phone' => 'required|min:9|numeric',
-        ]);
-        $pacient =  Pacient::find($id);
-        $pacient->first_name = $request->input('first_name');
-        $pacient->fathers_name = $request->input('fathers_name');
-        $pacient->last_name = $request->input('last_name');
-        $pacient->personal_number = $request->input('personal_number');
-        $pacient->date_of_birth = $request->input('date_of_birth');
-        $pacient->gender = $request->input('gender');
-        $pacient->address = $request->input('address');
-        $pacient->residence = $request->input('residence');
-        $pacient->city = $request->input('city');
-        $pacient->phone = $request->input('phone');
-        $pacient->email = $request->input('email');
-        $pacient->save();
-        return redirect(route('pacient.index'))->with('success', __('messages.patient-edit'));
+        $pacient->update(
+            Request::validate([
+                'name' => ['required', 'min:3'],
+                'personal_number' => ['required', 'digits:10','numeric'],
+                'date_of_birth' => ['required', 'date'],
+                'address' => ['required', 'min:2'],
+                'residence' => ['required', 'min:2'],
+                'city' => ['required', 'min:2'],
+                'phone' => ['required', 'min:9','numeric'],
+                'email' => ['required','email'],
+                'gender' => ['required'],
+            ])
+        );
+        return Redirect::back()->with('success', __('messages.patient-edit'));
     }
 
     /**
@@ -97,9 +62,8 @@ class PacientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pacient $pacient)
     {
-        $pacient = Pacient::find($id);
         $pacient->appointment()->delete();
         $pacient->visit()->delete();
         $treatment = $pacient->treatment()->get();
@@ -110,6 +74,20 @@ class PacientController extends Controller
         }
         $pacient->report()->delete();
         $pacient->delete();
-        return redirect(route('pacient.index'))->with('success', __('messages.patient-delete'));
+        return Redirect::back()->with('success', __('messages.patient-delete'));
+    }
+
+    public function restore($id)
+    {
+        $pacient = Pacient::onlyTrashed()->find($id);
+        $pacient->restore();
+        return Redirect::back()->with('success', 'Pacient restored.');
+    }
+
+    public function delete($id)
+    {
+        $pacient = Pacient::onlyTrashed()->find($id);
+        $pacient->forceDelete();
+        return Redirect::back()->with('success', 'Pacient has been deleted permanently.');
     }
 }

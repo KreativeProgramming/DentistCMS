@@ -25,6 +25,6 @@ class Treatment extends Model
     {
         $treatment = Treatment::find($id);
         $pacient = Pacient::find($treatment->pacient_id);
-        return $pacient->first_name . ' ' . $pacient->last_name . ' (' . $treatment->starting_date . ' | ' . $treatment->duration . ')';
+        return $pacient->name . ' (' . $treatment->starting_date . ' | ' . $treatment->duration . ')';
     }
 }

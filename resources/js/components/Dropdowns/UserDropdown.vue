@@ -13,7 +13,7 @@
           <img
             alt="..."
             class="w-full h-full object-cover rounded-full align-middle border-none shadow-lg"
-            :src="$page.user.profile_photo_url"
+            :src="$page.props.user.profile_photo_url"
           />
         </span>
       </div>
@@ -55,11 +55,10 @@ export default {
     };
   },
   methods: {
-    logout() {
-      axios.post(route("logout").url()).then((response) => {
-        window.location = "/";
-      });
-    },
+     logout() 
+     {
+                this.$inertia.post(route('logout'));
+            },
     toggleDropdown: function (event) {
       event.preventDefault();
       if (this.dropdownPopoverShow) {
