@@ -12,13 +12,19 @@ class PacientController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Pacient/index', [
+        return Inertia::render('Pacient/Index', [
             'filters' =>Request::all('search', 'trashed'),
             'pacients' => Pacient::orderByName()
                         ->filter(Request::only('search', 'trashed'))
                         ->paginate(),
         ]);
     }
+
+    public function create()
+    {
+        return Inertia::render('Pacient/Create');
+    }
+
 
     public function store()
     {
@@ -35,7 +41,26 @@ class PacientController extends Controller
                 'gender' => ['required'],
             ])
         );
-        return Redirect::back()->with('success', __('messages.patient-add'));
+        return Redirect::route('pacient.index')->with('success', __('messages.patient-add'));
+    }
+
+    public function edit(Pacient $pacient)
+    {
+        return Inertia::render('Pacient/Edit', [
+            'pacient' => [
+                'id' => $pacient->id,
+                'name' => $pacient->name,
+                'personal_number' => $pacient->personal_number,
+                'date_of_birth' => $pacient->date_of_birth,
+                'address' => $pacient->address,
+                'residence' => $pacient->residence,
+                'city' => $pacient->city,
+                'phone' => $pacient->phone,
+                'email' => $pacient->email,
+                'gender' => $pacient->gender,
+
+            ]
+        ]);
     }
 
     public function update(Pacient $pacient)
@@ -53,7 +78,7 @@ class PacientController extends Controller
                 'gender' => ['required'],
             ])
         );
-        return Redirect::back()->with('success', __('messages.patient-edit'));
+        return Redirect::route('pacient.index')->with('success', __('messages.patient-edit'));
     }
 
     /**
@@ -74,20 +99,20 @@ class PacientController extends Controller
         }
         $pacient->report()->delete();
         $pacient->delete();
-        return Redirect::back()->with('success', __('messages.patient-delete'));
+        return Redirect::route('pacient.index')->with('success', __('messages.patient-delete'));
     }
 
     public function restore($id)
     {
         $pacient = Pacient::onlyTrashed()->find($id);
         $pacient->restore();
-        return Redirect::back()->with('success', 'Pacient restored.');
+        return Redirect::route('pacient.index')->with('success', 'Pacient restored.');
     }
 
     public function delete($id)
     {
         $pacient = Pacient::onlyTrashed()->find($id);
         $pacient->forceDelete();
-        return Redirect::back()->with('success', 'Pacient has been deleted permanently.');
+        return Redirect::route('pacient.index')->with('success', 'Pacient has been deleted permanently.');
     }
 }

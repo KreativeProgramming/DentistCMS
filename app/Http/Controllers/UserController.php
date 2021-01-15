@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('User/index', [
+        return Inertia::render('User/Index', [
             'filters' =>Request::all('search', 'trashed'),
             'users' => User::orderByName()->with('role')
                         ->filter(Request::only('search', 'trashed'))
@@ -28,9 +28,8 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::all();
         return Inertia::render('User/Create', [
-            'roles' => $roles,
+            'roles' => Role::all(),
         ]);
     }
 
@@ -50,8 +49,7 @@ class UserController extends Controller
     }
 
     public function edit(User $user)
-    {
-        $roles = Role::all();
+    {   
         return Inertia::render('User/Edit', [
             'user' => [
                 'id' => $user->id,
@@ -60,7 +58,7 @@ class UserController extends Controller
                 'role_id' => $user->role_id,
                 'color' => $user->color,
             ],
-            'roles' => $roles,
+            'roles' => Role::all(),
         ]);
     }
 

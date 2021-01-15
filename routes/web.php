@@ -29,20 +29,9 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::resource('user', UserController::class);
     Route::resource('pacient', PacientController::class);
     Route::resource('appointment', AppointmentController::class);
@@ -59,4 +48,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('pacient/{id}/delete',  [PacientController::class, 'delete'])->name('pacient.delete');
     Route::put('user/{id}/restore',  [UserController::class, 'restore'])->name('user.restore');
     Route::put('user/{id}/delete',  [UserController::class, 'delete'])->name('user.delete');
+    Route::put('appointment/{id}/restore',  [AppointmentController::class, 'restore'])->name('appointment.restore');
+    Route::put('appointment/{id}/delete',  [AppointmentController::class, 'delete'])->name('appointment.delete');
 });

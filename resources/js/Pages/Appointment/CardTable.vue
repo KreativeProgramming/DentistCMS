@@ -50,25 +50,35 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="appointment in appointments" :key="appointment.id">
+          <tr v-for="appointment in appointments.data" :key="appointment.id">
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
             >
-              <i
-                v-show="
-                  appointment.pacient.gender == 'M' ||
-                  appointment.pacient.gender == 'm'
-                "
-                class="fa fa-mars"
-              ></i>
-              <i
-                v-show="
-                  appointment.pacient.gender == 'F' ||
-                  appointment.pacient.gender == 'f'
-                "
-                class="fa fa-venus"
-              ></i>
-              {{ appointment.pacient.name }}
+              <div class="flex items-center">
+                      <svg :class="[
+                                        appointment.pacient.deleted_at === null
+                                         ? 'border-gray-700'
+                                          : 'border-red-500',
+                                      ]"  v-if="appointment.pacient.gender == 'F'" class="h-12 w-12 bg-white rounded-full border-2 object-cover " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+                                        <path style="fill: #374151; stroke-width: 0.683348" d="M128 0c35.346 0 64 28.654 64 64s-28.654 64-64 64c-35.346 0-64-28.654-64-64S92.654 0 128 0m119.283 354.179l-48-192A24 24 0 0 0 176 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H80a24 24 0 0 0-23.283 18.179l-48 192C4.935 369.305 16.383 384 32 384h56v104c0 13.255 10.745 24 24 24h32c13.255 0 24-10.745 24-24V384h56c15.591 0 27.071-14.671 23.283-29.821z"/></svg>
+                     <svg :class="[
+                                        appointment.pacient.deleted_at === null
+                                          ? 'border-gray-700'
+                                          : 'border-red-500',
+                                      ]" v-else class="h-12 w-12 bg-white rounded-full border-2 object-cover "  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512">
+                                      <path style="fill: #374151; stroke-width: 0.683348" d="M96 0c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64S60.654 0 96 0m48 144h-11.36c-22.711 10.443-49.59 10.894-73.28 0H48c-26.51 0-48 21.49-48 48v136c0 13.255 10.745 24 24 24h16v136c0 13.255 10.745 24 24 24h64c13.255 0 24-10.745 24-24V352h16c13.255 0 24-10.745 24-24V192c0-26.51-21.49-48-48-48z"/></svg>
+                  <div class="ml-4">
+                    <div class="text-sm font-bold text-gray-700">
+                       {{ appointment.pacient.name}} <i v-if="appointment.pacient.deleted_at !== null" class="fa fa-trash text-red-500"></i>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                     {{appointment.pacient.personal_number}}
+                    </div>
+                     <div class="text-xs text-gray-500">
+                     {{appointment.pacient.date_of_birth }}
+                    </div>
+                  </div>
+                </div>
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left flex items-center"
@@ -434,7 +444,13 @@ import { required } from "vuelidate/lib/validators";
 import RedAlert from "./../../components/Alerts/RedAlert.vue";
 
 export default {
-  props: ["users", "pacients", "appointments"],
+ props: {
+    users: Array,
+    appointments: Object,
+    pacients: Array,
+    filters: Object,
+  },
+
   components: { RedAlert },
   data() {
     return {

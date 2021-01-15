@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use App\Models\User;
 use App\Models\Pacient;
 use App\Models\Appointment;
@@ -11,6 +12,7 @@ use App\Models\Notification;
 
 class AppointmentController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -18,91 +20,66 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->get();
-        $pacients = Pacient::all();
-        $appointments = Appointment::with('user')->with('pacient')->get();
-        return Inertia::render('Appointment/index', [
-            'users' => $users,
-            'pacients' => $pacients,
-            'appointments' => $appointments
+        return Inertia::render('Appointment/Index', [
+            'filters' =>Request::all('search', 'trashed'),
+            'appointments' => Appointment::orderByDate()
+                                ->with(['pacient', 'user'])
+                                ->filter(Request::only('search', 'trashed'))
+                                ->paginate(),
+
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function create()
     {
-        $this->validate($request, [
-            'pacient_id' => 'required|numeric',
-            'user_id' => 'required|numeric',
-            'date_of_appointment' => 'required|date',
+        return Inertia::render('Appointment/Create', [
+            'users' => User::with('role')->get(),
+            'pacients' => Pacient::all(),
         ]);
-        $error = \Illuminate\Validation\ValidationException::withMessages([
-            'date_of_appointment' => ['Termini në këtë datë dhe orë egziston'],
-            'time_of_appointment' => ['Termini në këtë datë dhe orë egziston'],
-        ]);
-        $appointments = Appointment::where('date_of_appointment', '=', $request->input('date_of_appointment'))
-            ->where('time_of_appointment', '=', $request->input('time_of_appointment'))->get();
-        if (count($appointments))
-            throw $error;
-        $appointment = new Appointment;
-        $appointment->pacient_id = $request->input('pacient_id');
-        $appointment->user_id = $request->input('user_id');
-        $appointment->date_of_appointment = $request->input('date_of_appointment');
-        $appointment->time_of_appointment = $request->input('time_of_appointment');
-        $appointment->save();
-        $pacient = Pacient::find($request->input('pacient_id'));
-        $notifications = new Notification;
-        $notifications->type = 'termin-' . $appointment->id;
-        $notifications->description = $pacient->name .' ka terminin për ditën e nesërme në ora ' . $appointment->time_of_appointment . '.';
-        $notifications->date = $request->input('date_of_appointment');
-        $notifications->opened = false;
-        $notifications->save();
-        return redirect(route('appointment.index'))->with('success', __('messages.appointment-add'));
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function store()
     {
-        $this->validate($request, [
-            'pacient_id' => 'required|numeric',
-            'user_id' => 'required|numeric',
-            'date_of_appointment' => 'required|date',
+        Appointment::create(
+            Request::validate([
+                'pacient_id' => ['required'],
+                'user_id' => ['required'],
+                'date_of_appointment' => ['required','date'],
+                'time_of_appointment' => ['required'],
+            ])
+        );
+        return Redirect::route('appointment.index')->with('success', __('messages.appointment-add'));
+    }
+
+    public function edit(Appointment $appointment)
+    {
+        return Inertia::render('Appointment/Edit', [
+            'appointment' => [
+                'id' => $appointment->id,
+                'pacient_id' => $appointment->pacient_id,
+                'user_id' => $appointment->user_id,
+                'date_of_appointment' => $appointment->date_of_appointment,
+                'time_of_appointment' => $appointment->time_of_appointment,
+                'user' => $appointment->user,
+                'pacient' => $appointment->pacient,
+            ],
+            'users' => User::with('role')->get(),
+            'pacients' => Pacient::all(),
         ]);
-        $error = \Illuminate\Validation\ValidationException::withMessages([
-            'date_of_appointment' => ['Termini në këtë datë dhe orë egziston'],
-            'time_of_appointment' => ['Termini në këtë datë dhe orë egziston'],
-        ]);
-        $appointments = Appointment::where('date_of_appointment', '=', $request->input('date_of_appointment'))
-            ->where('time_of_appointment', '=', $request->input('time_of_appointment'))->get();
-        if (count($appointments))
-            throw $error;
-        $appointment = Appointment::find($id);
-        $pacient = Pacient::find($appointment->pacient_id);
-        $notifications = Notification::where('type', '=', 'termin-' . $appointment->id)->first();
-        $appointment->pacient_id = $request->input('pacient_id');
-        $appointment->user_id = $request->input('user_id');
-        $appointment->date_of_appointment = $request->input('date_of_appointment');
-        $appointment->time_of_appointment = $request->input('time_of_appointment');
-        $appointment->save();
-        if (!empty($notifications)) {
-            $notifications->description = $pacient->name. ' ka terminin për ditën e nesërme në ora ' . $appointment->time_of_appointment . '.';
-            $notifications->date =  $request->input('date_of_appointment');
-            $notifications->opened = false;
-            $notifications->save();
-        }
-        return redirect(route('appointment.index'))->with('success', __('messages.appointment-edit'));
+    }
+
+    public function update(Appointment $appointment)
+    {
+        $appointment->update(
+            Request::validate([
+                'pacient_id' => ['required'],
+                'user_id' => ['required'],
+                'date_of_appointment' => ['required','date'],
+                'time_of_appointment' => ['required'],
+            ])
+        );
+        return Redirect::route('appointment.index')->with('success', __('messages.appointment-edit'));
     }
 
     /**
@@ -111,15 +88,23 @@ class AppointmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Appointment $appointment)
     {
-        $appointment = Appointment::find($id);
-        $pacient = Pacient::find($appointment->pacient_id);
-        $notifications = Notification::where('type', '=', 'termin-' . $appointment->id)->first();
-        if (!empty($notifications)) {
-            $notifications->delete();
-        }
         $appointment->delete();
-        return redirect(route('appointment.index'))->with('success', __('messages.appointment-delete'));
+        return Redirect::route('appointment.index')->with('success', __('messages.appointment-delete'));
+    }
+
+    public function restore($id)
+    {
+        $appointment = Appointment::onlyTrashed()->find($id);
+        $appointment->restore();
+        return Redirect::route('appointment.index')->with('success', 'U rikthye Termini.');
+    }
+
+    public function delete($id)
+    {
+        $appointment = Appointment::onlyTrashed()->find($id);
+        $appointment->forceDelete();
+        return Redirect::route('appointment.index')->with('success', 'Termini është fshirë përgjithmonë.');
     }
 }

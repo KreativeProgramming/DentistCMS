@@ -270,25 +270,17 @@ export default {
   methods: {
     submitForm() {},
     update () {
-      if (!confirm("A jeni i sigurtë që dëshironi të ndryshoni përdoruesin?")) return;
-       this.$inertia.put(this.route('user.update', this.user), this.form, {
-        onStart: () => this.sending = true,
-        onFinish: () => this.sending = false,
-      })
+        if (this.$v.form.$invalid) {
+            alert("Form is not valid");
+        } 
+        else {
+            if (!confirm("A jeni i sigurtë që dëshironi të ndryshoni përdoruesin?")) return;
+            this.$inertia.put(this.route('user.update', this.user),this.form)
+        }
     },
     deleteUser() {
       if (!confirm("A jeni i sigurtë që dëshironi të fshini përdoruesin?")) return;
       this.$inertia.delete(this.route('user.destroy', this.user))
-    },
-    restore() {
-      if (confirm('A jeni i sigurtë që dëshironi të riktheni përdoruesin?')) {
-        this.$inertia.put(this.route('user.restore', this.user))
-      }
-    },
-    deletePermn() {
-      if (confirm('A jeni i sigurtë që dëshironi të fshini përdoruesin përgjithmonë?')) {
-        this.$inertia.put(this.route('user.delete', this.user))
-      }
     },
   },
 

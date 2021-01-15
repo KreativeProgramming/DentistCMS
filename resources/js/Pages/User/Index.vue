@@ -146,17 +146,6 @@ export default {
   },
   data() {
     return {
-      modalShow: false,
-      editMode: false,
-      form: {
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        password_confirmation: this.password_confirmation,
-        color: this.color,
-        role_id: this.role_id,
-      },
-      formValidated: false,
       searchForm:{
             search: this.filters.search,
             trashed: this.filters.trashed,

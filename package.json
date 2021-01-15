@@ -30,6 +30,7 @@
         "@fortawesome/fontawesome-free": "^5.15.1",
         "@inertiajs/progress": "^0.2.4",
         "@popperjs/core": "^2.6.0",
+        "stf-vue-select": "^0.1.15",
         "vue-meta": "^2.4.0",
         "vuelidate": "^0.7.6"
     }

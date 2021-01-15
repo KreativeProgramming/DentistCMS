@@ -1,8 +1,13 @@
 <template>
-  <app-layout>
-    <div class="flex flex-wrap mt-4">
-      <div class="w-full mb-12 px-4">
-          <form>
+    <app-layout>
+        <div class="flex flex-wrap mt-4">
+            <div class="w-full mb-12 px-4">
+                <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+                    <div class="rounded-t mb-0 px-4 py-3 border-0">
+                        <h3 class="font-semibold text-lg text-gray-800 inline">Ndrysho Pacient</h3>
+                    </div>
+                    <div class="block w-full px-10 py-5">
+                       <form class="max-w-6xl w-full">
                                 <div class="flex flex-wrap -mx-3 mb-6">
                                   <div
                                     class="w-full sm:w-1/2 px-3 mb-6 md:mb-0"
@@ -17,15 +22,16 @@
                                       :class="[
                                         $v.form.name.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-name"
                                       type="text"
                                       placeholder="Emri"
                                       name="name"
                                       v-model="form.name"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.name">{{ errors.name }}</div>
                                     <p
                                       v-if="!$v.form.name.required"
                                       class="text-red-500 text-xs italic"
@@ -55,15 +61,16 @@
                                         $v.form.personal_number.$invalid ===
                                         true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative  bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-personal-number"
                                       type="text"
                                       placeholder="Numri Personal"
                                       name="personal_number"
                                       v-model="form.personal_number"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.personal_number">{{ errors.personal_number }}</div>
                                     <p
                                       v-if="!$v.form.personal_number.required"
                                       class="text-red-500 text-xs italic"
@@ -99,15 +106,16 @@
                                       :class="[
                                         $v.form.date_of_birth.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative  bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-date-of-birth"
                                       type="date"
                                       placeholder="Data e lindjes"
                                       name="date_of_birth"
                                       v-model="form.date_of_birth"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.date_of_birth">{{ errors.date_of_birth }}</div>
                                     <p
                                       v-if="!$v.form.date_of_birth.required"
                                       class="text-red-500 text-xs italic"
@@ -140,6 +148,7 @@
                                         v-model="form.gender"
                                       />
                                       <label for="female">Femer</label>
+                                       <div  class="text-red-500 text-xs italic" v-if="errors.gender">{{ errors.gender }}</div>
                                     </div>
                                     <p
                                       v-if="!$v.form.gender.required"
@@ -159,15 +168,16 @@
                                       :class="[
                                         $v.form.address.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-address"
                                       type="text"
                                       placeholder="Adresa"
                                       name="address"
                                       v-model="form.address"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.address">{{ errors.address }}</div>
                                     <p
                                       v-if="!$v.form.address.required"
                                       class="text-red-500 text-xs italic"
@@ -200,15 +210,16 @@
                                       :class="[
                                         $v.form.residence.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative  bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-residence"
                                       type="text"
                                       placeholder="Vendbanimi"
                                       name="residence"
                                       v-model="form.residence"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.residence">{{ errors.residence }}</div>
                                     <p
                                       v-if="!$v.form.residence.required"
                                       class="text-red-500 text-xs italic"
@@ -237,15 +248,16 @@
                                       :class="[
                                         $v.form.city.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative  bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-city"
                                       type="text"
                                       placeholder="Qyteti"
                                       name="city"
                                       v-model="form.city"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.city">{{ errors.city }}</div>
                                     <p
                                       v-if="!$v.form.city.required"
                                       class="text-red-500 text-xs italic"
@@ -276,15 +288,16 @@
                                       :class="[
                                         $v.form.phone.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative  bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-phone"
                                       type="text"
                                       placeholder="Nr Telefonit"
                                       name="phone"
                                       v-model="form.phone"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.phone">{{ errors.phone }}</div>
                                     <p
                                       v-if="!$v.form.phone.required"
                                       class="text-red-500 text-xs italic"
@@ -317,15 +330,16 @@
                                       :class="[
                                         $v.form.email.$invalid === true
                                           ? 'border-red-500'
-                                          : 'border-grey-200',
+                                          : 'border-grey-400',
                                       ]"
-                                      class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                      class="px-3 py-3 placeholder-gray-400 text-gray-700 relative  bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full"
                                       id="grid-email"
                                       type="email"
                                       placeholder="E-mail"
                                       name="email"
                                       v-model="form.email"
                                     />
+                                     <div  class="text-red-500 text-xs italic" v-if="errors.email">{{ errors.email }}</div>
                                     <p
                                       v-if="!$v.form.email.required"
                                       class="text-red-500 text-xs italic"
@@ -341,97 +355,131 @@
                                   </div>
                                 </div>
                               </form>
-      </div>
-    </div>
-  </app-layout>
+                        <div class="flex w-full rounded-md shadow-sm flex-row-reverse float-right"  >
+                           <div class="flex w-full rounded-md shadow-sm flex-row-reverse float-right"  >
+                            <button
+                            @click="update()"
+                            type="button"
+                            :disabled="$v.form.$invalid"
+                            :class="[
+                                $v.form.$invalid == false
+                                ? 'bg-blue-600 focus:border-blue-700 hover:bg-blue-500'
+                                : 'bg-blue-500 opacity-50 cursor-not-allowed',
+                            ]"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                            >
+                            Ndrysho
+                            </button>
+                            <button
+                            @click="deletePacient()"
+                            type="button"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                            >
+                            Fshij
+                            </button>
+                            </div>
+                          </div>
+            </div>
+</div>
+</div>
+</div>
+</app-layout>
 </template>
 
-<script>
-import AppLayout from "./../../Layouts/AppLayout";
-import CardTable from "./CardTable.vue";
-import {
+
+<script>import {
   required,
   numeric,
   minLength,
   maxLength,
   email,
 } from "vuelidate/lib/validators";
-import pickBy from 'lodash/pickBy';
-import throttle from 'lodash/throttle';
+import AppLayout from "./../../Layouts/AppLayout";
+
 export default {
-  props: ["sessions", "users", "pacients", "appointments"],
-
-  components: {
-    AppLayout,
-    CardTable,
-  },
-  data(){
-    return {
-      form: 
-      {
-        name: this.name,
-        personal_number: this.personal_number,
-        gender: this.gender,
-        date_of_birth: this.date_of_birth,
-        address: this.address,
-        residence: this.residence,
-        city: this.city,
-        phone: this.phone,
-        email: this.email,
-      },
-      formValidated: false,
-    };
-  },
-   watch: {
-    searchForm: {
-      handler: throttle(function() {
-        let query = pickBy(this.searchForm)
-        this.$inertia.replace(this.route('pacient.index', Object.keys(query).length ? query : { remember: 'forget' }))
-      }, 150),
-      deep: true,
+    props: {
+        pacient: Object,
+        errors: Object, 
     },
-  },
-  validations: {
-    form: {
-      name: {
-        required,
-        minLength: minLength(3),
-      },
-      email: {
-        required,
-        email,
-      },
-      personal_number: {
-        required,
-        minLength: minLength(10),
-        maxLength: maxLength(10),
-        numeric,
-      },
-      gender: {
-        required,
-      },
-      date_of_birth: {
-        required,
-      },
-      address: {
-        required,
-        minLength: minLength(3),
-      },
-      residence: {
-        required,
-        minLength: minLength(3),
-      },
-      city: {
-        required,
-        minLength: minLength(3),
-      },
-      phone: {
-        required,
-        numeric,
-        minLength: minLength(9),
-      },
+    metaInfo: { 
+        title: 'Ndrysho Pacient' 
     },
-  },
-};
+    components: {
+        AppLayout,
+    },
+    data() {
+        return {
+            form: 
+            {
+                name: this.pacient.name,
+                personal_number: this.pacient.personal_number,
+                gender: this.pacient.gender,
+                date_of_birth: this.pacient.date_of_birth,
+                address: this.pacient.address,
+                residence: this.pacient.residence,
+                city: this.pacient.city,
+                phone: this.pacient.phone,
+                email: this.pacient.email,
+            },
+            formValidated: false,
+        };
+    },
+    validations: {
+        form: {
+            name: {
+                required,
+                minLength: minLength(3),
+            },
+            email: {
+                required,
+                email,
+            },
+            personal_number: {
+                required,
+                minLength: minLength(10),
+                maxLength: maxLength(10),
+                numeric,
+            },
+            gender: {
+                required,
+            },
+            date_of_birth: {
+                required,
+            },
+            address: {
+                required,
+                minLength: minLength(3),
+            },
+            residence: {
+                required,
+                minLength: minLength(3),
+            },
+            city: {
+                required,
+                minLength: minLength(3),
+            },
+            phone: {
+                required,
+                numeric,
+                minLength: minLength(9),
+            },
+        },
+    },
+    methods: {
+        submitForm() {},
+        update () {
+            if (this.$v.form.$invalid) {
+                alert("Form is not valid");
+            } 
+            else {
+                if (!confirm("A jeni i sigurtë që dëshironi të ndryshoni pacientin?")) return;
+                this.$inertia.put(this.route('pacient.update', this.pacient),this.form)
+            }
+        },
+        deletePacient() {
+        if (!confirm("A jeni i sigurtë që dëshironi të fshini pacientin?")) return;
+        this.$inertia.delete(this.route('pacient.destroy', this.pacient))
+        },
+    },
+}
 </script>
-
