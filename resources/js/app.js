@@ -8,12 +8,14 @@ import { InertiaProgress } from '@inertiajs/progress';
 import VueMeta from 'vue-meta'
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Vuelidate from "vuelidate";
+import SmartTable from 'vuejs-smart-table'
 
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaPlugin);
 Vue.use(PortalVue);
 Vue.use(Vuelidate);
 Vue.use(VueMeta);
+Vue.use(SmartTable);
 
 InertiaProgress.init({
     color: '#2563eb',

@@ -137,7 +137,7 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('pacient.index')"
-              :active="route().current('pacient.index')"
+              :active="route().current('pacient.index')  || route().current('pacient.create') || route().current('pacient.edit')"
             >
               <i class="fas fa-user mr-2 text-sm"></i>
               Pacientët
@@ -147,70 +147,19 @@
           <li class="items-center">
             <jet-nav-link
               :href="route('appointment.index')"
-              :active="route().current('appointment.index')"
+              :active="route().current('appointment.index')  || route().current('appointment.create') || route().current('appointment.edit')"
             >
               <i class="fas fa-calendar mr-2 text-sm"></i>
               Terminet
             </jet-nav-link>
           </li>
-        </ul>
-
-        <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Auth Layout Pages
-        </h6>
-        <!-- Navigation -->
-
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
             <jet-nav-link
-              :href="route('dashboard')"
-              :active="route().current('dashboard')"
+              :href="route('role.index')"
+              :active="route().current('role.index')  || route().current('role.create') || route().current('role.edit')"
             >
-              Dashboard
-            </jet-nav-link>
-          </li>
-
-          <li class="items-center">
-            <jet-nav-link
-              :href="route('dashboard')"
-              :active="route().current('dashboard')"
-            >
-              Dashboard
-            </jet-nav-link>
-          </li>
-        </ul>
-
-        <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          No Layout Pages
-        </h6>
-        <!-- Navigation -->
-
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-          <li class="items-center">
-            <jet-nav-link
-              :href="route('dashboard')"
-              :active="route().current('dashboard')"
-            >
-              Dashboard
-            </jet-nav-link>
-          </li>
-
-          <li class="items-center">
-            <jet-nav-link
-              :href="route('dashboard')"
-              :active="route().current('dashboard')"
-            >
-              Dashboard
+              <i class="fas fa-user-tag mr-2 text-sm"></i>
+              Rolet
             </jet-nav-link>
           </li>
         </ul>

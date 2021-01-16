@@ -9,6 +9,7 @@ class Notification extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['type','description','date','opened'];
 
     public static function getNotificationsNumber()
     {

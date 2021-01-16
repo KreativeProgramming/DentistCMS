@@ -355,7 +355,7 @@
                                   </div>
                                 </div>
                               </form>
-                        <div class="flex w-full rounded-md shadow-sm flex-row-reverse float-right"  >
+                        <div class="flex w-full flex-row-reverse float-right"  >
                             <button
                               @click="save(form)"
                               type="button"

@@ -8,8 +8,8 @@
 
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
-        <h3 class="font-semibold text-lg text-gray-800 inline mr-auto">Përdoruesit</h3>
-        <inertia-link :href="route('user.create')" as="button" class="float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+        <h3 class="font-semibold text-lg text-gray-800 inline mr-auto">Rolet</h3>
+       <inertia-link :href="route('role.create')" as="button" class="float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
               Krijo
          </inertia-link>
       </div>
@@ -28,17 +28,17 @@
             <th
               class="px-6 align-middle border border-solid py-3 text-xs bg-gray-100 text-gray-600 border-gray-200 uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
             >
-              Emri Mbiemri
+              Emri
             </th>
             <th
               class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
             >
-              E-mail
+              Akseset
             </th>
             <th
               class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
             >
-              Pozita
+              Përdoruesit
             </th>
             <th
               class="px-6 bg-gray-100 text-gray-600 border-gray-200 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
@@ -48,50 +48,69 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users.data" :key="user.id">
+          <tr v-for="role in roles.data" :key="role.id">
             <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left flex items-center"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
             >
-              <img
-                :src="user.profile_photo_url"
-                class="h-12 w-12 bg-white rounded-full border-2 object-cover"
-                :style="{ borderColor: user.color }"
-                alt="..."
-              />
-              <span class="ml-3 text-sm font-bold text-gray-700">
-                {{ user.name }} <i v-if="user.deleted_at !== null" class="fa fa-trash text-red-500"></i>
-              </span>
+               <div  :class="[role.deleted_at === null
+                                ? 'text-gray-700'
+                                : 'text-red-500',
+                            ]" class="text-sm font-bold ">{{ role.name }}</div>
             </th>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
             >
-             <div class="text-sm font-bold text-gray-700">{{ user.email }}</div>
-              
+            <div class="text-sm font-bold text-gray-700">
+               <span class="border border-gray-400 rounded p-1">
+               <i class="fa fa-eye"></i>
+               <i v-if="role.viewAccess == 0" class="fa fa-minus-square text-yellow-500"> </i>
+               <i v-else-if="role.viewAccess == 1" class="fa fa-check-square  text-green-500"> </i>
+               <i v-else class="fa fa-square text-red-500"> </i>
+              </span>
+                 <span class="border border-gray-400 rounded p-1">
+               <i class="fa fa-plus"></i>
+               <i v-if="role.createAccess == 0" class="fa fa-minus-square text-yellow-500"> </i>
+               <i v-else-if="role.createAccess == 1" class="fa fa-check-square text-green-500"> </i>
+               <i v-else class="fa fa-square text-red-500"> </i>
+                 </span>
+                    <span class="border border-gray-400 rounded p-1">
+               <i class="fa fa-pen"></i>
+               <i v-if="role.editAccess == 0" class="fa fa-minus-square text-yellow-500"> </i>
+               <i v-else-if="role.editAccess == 1" class="fa fa-check-square text-green-500"> </i>
+               <i v-else class="fa fa-square text-red-500"> </i>
+                    </span>
+                       <span class="border border-gray-400 rounded p-1">
+               <i class="fa fa-trash"></i>
+               <i v-if="role.deleteAccess == 0" class="fa fa-minus-square text-yellow-500"> </i>
+               <i v-else-if="role.deleteAccess == 1" class="fa fa-check-square text-green-500"> </i>
+               <i v-else class="fa fa-square text-red-500"> </i>
+               </span>
+              </div>
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
             >
-             <div class="text-sm font-bold text-gray-700">{{ user.role.name }}</div>
+             <div class="text-sm font-bold text-gray-700">{{ role.userNr }}</div>
           
             </td>
             <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-right"
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 "
             >
-            <inertia-link v-if="user.deleted_at === null" :href="route('user.edit',user.id)" as="button" class="float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+            <inertia-link v-if="role.deleted_at === null" :href="route('role.edit',role.id)" as="button" class="float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                 Ndrysho
               </inertia-link>
               <div v-else>
               <button 
                 class=" float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ml-1 sm:w-auto sm:text-sm"
                 type="button"
-                  v-on:click="restore(user)"
+                  v-on:click="restore(role)"
               >
                 Rikthe
               </button>
               <button 
                 class=" float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500  sm:w-auto sm:text-sm"
                 type="button"
-                  v-on:click="deletePermn(user)"
+                  v-on:click="deletePermn(role)"
               >
                 Fshij
               </button>
@@ -101,7 +120,7 @@
         </tbody>
       </table>
        
-      <pagination :links="users.links" />
+      <pagination :links="roles.links" />
     </div>
   </div>
       </div>
@@ -118,7 +137,7 @@ import pickBy from 'lodash/pickBy';
 import throttle from 'lodash/throttle';
 
 export default {
-   metaInfo: { title: 'Përdoruesit' },
+   metaInfo: { title: 'Rolet' },
   components: {
     SearchFilter,
     Pagination,
@@ -126,10 +145,10 @@ export default {
     AppLayout,
   },
    props: {
-    users: Object,
-    roles: Array,
+    roles: Object,
     filters: Object,
   },
+ 
   data() {
     return {
       searchForm:{
@@ -142,20 +161,20 @@ export default {
     searchForm: {
       handler: throttle(function() {
         let query = pickBy(this.searchForm)
-        this.$inertia.replace(this.route('user.index', Object.keys(query).length ? query : { remember: 'forget' }))
+        this.$inertia.replace(this.route('role.index', Object.keys(query).length ? query : { remember: 'forget' }))
       }, 150),
       deep: true,
     },
   },
   methods:{ 
     restore(data) {
-      if (confirm('A jeni i sigurtë që dëshironi të riktheni përdoruesin?')) {
-        this.$inertia.put(this.route('user.restore', data.id))
+      if (confirm('A jeni i sigurtë që dëshironi të riktheni rolin?')) {
+        this.$inertia.put(this.route('role.restore', data.id))
       }
     },
       deletePermn(data) {
-      if (confirm('A jeni i sigurtë që dëshironi të fshini përdoruesin përgjithmonë?')) {
-        this.$inertia.put(this.route('user.delete', data.id))
+      if (confirm('A jeni i sigurtë që dëshironi të fshini rolin përgjithmonë?')) {
+        this.$inertia.put(this.route('role.delete', data.id))
       }
     },
   }

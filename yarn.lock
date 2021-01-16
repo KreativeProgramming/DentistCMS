@@ -6581,6 +6581,13 @@ vue@^2.5.17:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
 
+vuejs-smart-table@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/vuejs-smart-table/-/vuejs-smart-table-0.0.7.tgz#ab017a1dd8302725fc9672f96bc8f419706857d9"
+  integrity sha512-uaxJpWJrqcA+3nw+0QRoVT3s16yx2ld8fLzRncE6KsuLyvpj9H/fTZzugVpz/4T6qigKbne+DYctzGN0FtOUdg==
+  dependencies:
+    vue "^2.5.17"
+
 vuelidate@^0.7.6:
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/vuelidate/-/vuelidate-0.7.6.tgz#84100c13b943470660d0416642845cd2a1edf4b2"

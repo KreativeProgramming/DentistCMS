@@ -195,7 +195,7 @@
                                         </div>
                                         </div>
                                     </form>
-                                    <div class="flex w-full rounded-md shadow-sm flex-row-reverse float-right"  >
+                                    <div class="flex w-full  flex-row-reverse float-right"  >
                                         <button
                                         @click="update()"
                                         type="button"
@@ -234,7 +234,7 @@ export default {
         roles: Array,
         errors: Object, 
     },
-    metaInfo: { title: 'Krijo Përdorues' },
+    metaInfo: { title: 'Ndrysho Përdorues' },
     components: {
         AppLayout,
     },

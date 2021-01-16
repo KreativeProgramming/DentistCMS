@@ -7,18 +7,10 @@
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
-            <h3 class="font-semibold text-lg text-gray-800 ">Pacientët</h3><br>
-        <div class="relative w-full px-4 max-w-full flex-grow flex-1 float-left">
-          
-           <nav-link :href="route('pacient.create')">
-            <button
-              class=" float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-              type="button"
-            >
+        <h3 class="font-semibold text-lg text-gray-800 mr-auto">Pacientët</h3>
+          <inertia-link :href="route('pacient.create')" as="button" class="float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
               Krijo
-            </button>
-          </nav-link>
-        </div>
+          </inertia-link>
       </div>
         <search-filter v-model="searchForm.search" class=" max-w-sm mr-auto inline">
                 <select v-model="searchForm.trashed"    class="px-3 py-1 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm border border-gray-400 outline-none focus:outline-none focus:shadow-outline w-full mr-1">
@@ -99,15 +91,9 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-right"
             >
-
-             <nav-link v-if="pacient.deleted_at === null" :href="route('pacient.edit',pacient.id)">
-              <button
-                class=" float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                type="button"
-              >
+              <inertia-link v-if="pacient.deleted_at === null" :href="route('pacient.edit',pacient.id)" as="button" class="float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                 Ndrysho
-              </button>
-              </nav-link>
+              </inertia-link>
               <div v-else>
               <button 
                 class=" float-right w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ml-1 sm:w-auto sm:text-sm"
@@ -140,7 +126,7 @@
 import AppLayout from "./../../Layouts/AppLayout";
 import Pagination from "./../../components/Pagination/Pagination.vue";
 import SearchFilter from "./../../components/Search/SearchFilter.vue";
-import NavLink from "@/Jetstream/NavLink.vue";
+import NavLink from "@/Jetstream/ResponsiveNavLink.vue";
 import pickBy from 'lodash/pickBy';
 import throttle from 'lodash/throttle';
 

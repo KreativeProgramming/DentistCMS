@@ -130,6 +130,16 @@ class User extends Authenticatable
         $query->orderBy('name');
     }
 
+    public function scopeOrderByEmail($query)
+    {
+        $query->orderBy('email');
+    }
+
+    public function scopeOrderByRole($query)
+    {
+        $query->orderBy('role_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
