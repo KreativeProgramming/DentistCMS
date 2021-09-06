@@ -155,6 +155,15 @@
           </li>
           <li class="items-center">
             <jet-nav-link
+              :href="route('treatment.index')"
+              :active="route().current('treatment.index')  || route().current('treatment.create') || route().current('treatment.edit')"
+            >
+              <i class="fas fa-syringe mr-2 text-sm"></i>
+              Trajtimet
+            </jet-nav-link>
+          </li>
+          <li class="items-center">
+            <jet-nav-link
               :href="route('role.index')"
               :active="route().current('role.index')  || route().current('role.create') || route().current('role.edit')"
             >

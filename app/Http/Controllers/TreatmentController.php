@@ -2,83 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
+use App\Models\Treatment;
+use App\Models\Pacient;
+use App\Models\Service;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
 class TreatmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        if(Gate::denies('access', 'view-treatment'))
+            return Redirect::back()->with('error', __('messages.noauthorization'));
+        else{
+            return Inertia::render('Treatment/Index', [
+                'filters' =>Request::all('search', 'trashed'),
+                'treatments' => Treatment::orderByDate()
+                                    ->with('pacient')
+                                    ->filter(Request::only('search', 'trashed'))
+                                    ->paginate(),
+
+            ]);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        if(Gate::denies('access', 'create-treatment'))
+            return Redirect::back()->with('error', __('messages.noauthorization'));
+        else{
+            return Inertia::render('Treatment/Create', [
+                'pacients' => Pacient::all(),
+                'services' => Service::all()
+            ]);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store()
     {
-        //
+        if(Gate::denies('access', 'create-treatment'))
+            return Redirect::back()->with('error', __('messages.noauthorization'));
+        else{
+            $treatment = Treatment::create(
+                Request::validate([
+                    'pacient_id' => ['required'],
+                    'starting_date' => ['required','date',],
+                    'duration' => ['required'],
+                    'file' => ['image','nullable','max:1999'],
+                ])
+                
+            );
+            $treatment->services()->attach(Request::input('services'));
+            return Redirect::route('treatment.index')->with('success', __('messages.treatment-add'));
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Treatment $treatment)
     {
-        //
+        if(Gate::denies('access', 'edit-treatment'))
+            return Redirect::back()->with('error', __('messages.noauthorization'));
+        else{
+            return Inertia::render('Treatment/Edit', [
+                'treatment' => [
+                    'id' => $treatment->id,
+                    'pacient_id' => $treatment->pacient_id,
+                    'starting_date' => $treatment->starting_date,
+                    'duration' => $treatment->duration,
+                    'file' => $treatment->file,
+                    'service' => $treatment->services()->get(),
+                    'pacient' => $treatment->pacient,
+                ],
+                'services' => Service::all(),
+                'pacients' => Pacient::all(),
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Treatment $treatment)
     {
-        //
+        if(Gate::denies('access', 'edit-appointment'))
+            return Redirect::back()->with('error', __('messages.noauthorization'));
+        else{
+            $treatment->update(
+                Request::validate([
+                    'pacient_id' => ['required'],
+                    'starting_date' => ['required','date',],
+                    'duration' => ['required'],
+                    'file' => ['image','nullable','max:1999'],
+                ])
+            );
+            $treatment->services()->detach();
+            $treatment->services()->attach(Request::input('services'));
+            return Redirect::route('treatment.index')->with('success', __('messages.treatment-edit'));
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Treatment $treatment)
     {
-        //
+        $treatment->delete();
+        return Redirect::route('treatment.index')->with('success', __('messages.treatment-delete'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function restore($id)
     {
-        //
+        $treatment = Treatment::onlyTrashed()->find($id);
+        $treatment->restore();
+        return Redirect::route('treatment.index')->with('success', __('messages.treatment-restore'));
+    }
+
+    public function delete($id)
+    {
+        $treatment = Treatment::onlyTrashed()->find($id);
+        $treatment->services()->detach();
+        $treatment->forceDelete();
+        return Redirect::route('treatment.index')->with('success',  __('messages.treatment-permanent'));
     }
 }

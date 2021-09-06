@@ -13,12 +13,12 @@ class Service extends Model
 
     public function treatments()
     {
-        return $this->belongsToMany(Treatment::class);
+        return $this->belongsToMany(Treatment::class)->withTimestamps();
     }
 
     public function payments()
     {
-        return $this->belongsToMany(Payment::class)->withPivot('tooth', 'discount', 'quantity');
+        return $this->belongsToMany(Payment::class)->withTimestamps()->withPivot('tooth', 'discount', 'quantity');
     }
 
     public static function getName($id)

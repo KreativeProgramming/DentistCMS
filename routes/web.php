@@ -52,5 +52,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('appointment/{id}/delete',  [AppointmentController::class, 'delete'])->name('appointment.delete');
     Route::put('role/{id}/restore',  [RoleController::class, 'restore'])->name('role.restore');
     Route::put('role/{id}/delete',  [RoleController::class, 'delete'])->name('role.delete');
+    Route::put('treatment/{id}/restore',  [TreatmentController::class, 'restore'])->name('treatment.restore');
+    Route::put('treatment/{id}/delete',  [TreatmentController::class, 'delete'])->name('treatment.delete');
     Route::put('notification/{id}/markAsRead', [HomeController::class, 'markAsRead'])->name('notification.markAsRead');
 });
