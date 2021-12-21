@@ -14,12 +14,12 @@
         <i class="fas fa-bars"></i>
       </button>
       <!-- Brand -->
-      <inertia-link
+      <Link
         :href="route('dashboard')"
         class="md:block text-left md:pb-1 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold px-0"
       >
         <jet-application-mark />
-      </inertia-link>
+      </Link>
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
         <li class="inline-block relative mr-1">
@@ -183,8 +183,9 @@ import NotificationDropdown from "./../Dropdowns/NotificationDropdown.vue";
 import UserDropdown from "./../Dropdowns/UserDropdown.vue";
 import JetNavLink from "./../../Jetstream/NavLink";
 import JetApplicationMark from "./../../Jetstream/ApplicationMark";
-import JetDropdown from '@/Jetstream/Dropdown'
-import JetDropdownLink from '@/Jetstream/DropdownLink'
+import JetDropdown from '@/Jetstream/Dropdown';
+import JetDropdownLink from '@/Jetstream/DropdownLink';
+import { Link } from '@inertiajs/inertia-vue';
 
 export default {
   props: ["notifications"],
@@ -205,6 +206,7 @@ export default {
     JetApplicationMark,
     JetDropdown,
     JetDropdownLink,
+    Link,
   },
 };
 </script>

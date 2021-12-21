@@ -1,13 +1,17 @@
 <template>
-    <inertia-link :href="href" :class="classes">
+    <Link :href="href" :class="classes">
         <slot></slot>
-    </inertia-link>
+    </Link>
 </template>
 
 <script>
+    import { Link } from '@inertiajs/inertia-vue';
+
     export default {
         props: ['href', 'active'],
-
+        components: {
+            Link
+        },
         computed: {
             classes() {
                 return this.active
