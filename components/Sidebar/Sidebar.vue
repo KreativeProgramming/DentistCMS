@@ -9,17 +9,17 @@
       <button
         class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
         type="button"
-        v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
+        @click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
       >
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars" />
       </button>
       <!-- Brand -->
-      <router-link
+      <NuxtLink
         class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
         to="/"
       >
-        Vue Notus
-      </router-link>
+        Dentist CRM
+      </NuxtLink>
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
         <li class="inline-block relative">
@@ -32,7 +32,7 @@
       <!-- Collapse -->
       <div
         class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
-        v-bind:class="collapseShow"
+        :class="collapseShow"
       >
         <!-- Collapse header -->
         <div
@@ -40,20 +40,20 @@
         >
           <div class="flex flex-wrap">
             <div class="w-6/12">
-              <router-link
+              <NuxtLink
                 class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                 to="/"
               >
-                Vue Notus
-              </router-link>
+                Dentist CRM
+              </NuxtLink>
             </div>
             <div class="w-6/12 flex justify-end">
               <button
                 type="button"
                 class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                v-on:click="toggleCollapseShow('hidden')"
+                @click="toggleCollapseShow('hidden')"
               >
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times" />
               </button>
             </div>
           </div>
@@ -65,117 +65,111 @@
               type="text"
               placeholder="Search"
               class="border-0 px-3 py-2 h-12 border border-solid border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
-            />
+            >
           </div>
         </form>
 
         <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Admin Layout Pages
-        </h6>
+        <hr class="my-4 md:min-w-full">
         <!-- Navigation -->
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
-            <router-link
-              to="/admin/dashboard"
+            <NuxtLink
               v-slot="{ href, navigate, isActive }"
+              to="/"
             >
               <a
                 :href="href"
-                @click="navigate"
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
                     ? 'text-emerald-500 hover:text-emerald-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
+                @click="navigate"
               >
                 <i
                   class="fas fa-tv mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
+                />
                 Dashboard
               </a>
-            </router-link>
+            </NuxtLink>
           </li>
 
           <li class="items-center">
-            <router-link
-              to="/admin/settings"
+            <NuxtLink
               v-slot="{ href, navigate, isActive }"
+              to="/admin/settings"
             >
               <a
                 :href="href"
-                @click="navigate"
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
                     ? 'text-emerald-500 hover:text-emerald-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
+                @click="navigate"
               >
                 <i
                   class="fas fa-tools mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
+                />
                 Settings
               </a>
-            </router-link>
+            </NuxtLink>
           </li>
 
           <li class="items-center">
-            <router-link
-              to="/admin/tables"
+            <NuxtLink
               v-slot="{ href, navigate, isActive }"
+              to="/admin/tables"
             >
               <a
                 :href="href"
-                @click="navigate"
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
                     ? 'text-emerald-500 hover:text-emerald-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
+                @click="navigate"
               >
                 <i
                   class="fas fa-table mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
+                />
                 Tables
               </a>
-            </router-link>
+            </NuxtLink>
           </li>
 
           <li class="items-center">
-            <router-link to="/admin/maps" v-slot="{ href, navigate, isActive }">
+            <NuxtLink v-slot="{ href, navigate, isActive }" to="/admin/maps">
               <a
                 :href="href"
-                @click="navigate"
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
                     ? 'text-emerald-500 hover:text-emerald-600'
                     : 'text-blueGray-700 hover:text-blueGray-500',
                 ]"
+                @click="navigate"
               >
                 <i
                   class="fas fa-map-marked mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
+                />
                 Maps
               </a>
-            </router-link>
+            </NuxtLink>
           </li>
         </ul>
 
         <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
+        <hr class="my-4 md:min-w-full">
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
@@ -186,30 +180,30 @@
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
-            <router-link
+            <NuxtLink
               class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               to="/auth/login"
             >
-              <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
+              <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm" />
               Login
-            </router-link>
+            </NuxtLink>
           </li>
 
           <li class="items-center">
-            <router-link
+            <NuxtLink
               class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               to="/auth/register"
             >
               <i
                 class="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"
-              ></i>
+              />
               Register
-            </router-link>
+            </NuxtLink>
           </li>
         </ul>
 
         <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
+        <hr class="my-4 md:min-w-full">
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
@@ -220,28 +214,28 @@
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
-            <router-link
+            <NuxtLink
               class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               to="/landing"
             >
-              <i class="fas fa-newspaper text-blueGray-300 mr-2 text-sm"></i>
+              <i class="fas fa-newspaper text-blueGray-300 mr-2 text-sm" />
               Landing Page
-            </router-link>
+            </NuxtLink>
           </li>
 
           <li class="items-center">
-            <router-link
+            <NuxtLink
               class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               to="/profile"
             >
-              <i class="fas fa-user-circle text-blueGray-300 mr-2 text-sm"></i>
+              <i class="fas fa-user-circle text-blueGray-300 mr-2 text-sm" />
               Profile Page
-            </router-link>
+            </NuxtLink>
           </li>
         </ul>
 
         <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
+        <hr class="my-4 md:min-w-full">
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
@@ -258,7 +252,7 @@
             >
               <i
                 class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
-              ></i>
+              />
               Styles
             </a>
           </li>
@@ -269,7 +263,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fab fa-css3-alt mr-2 text-blueGray-300 text-base"></i>
+              <i class="fab fa-css3-alt mr-2 text-blueGray-300 text-base" />
               CSS Components
             </a>
           </li>
@@ -280,7 +274,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fab fa-angular mr-2 text-blueGray-300 text-base"></i>
+              <i class="fab fa-angular mr-2 text-blueGray-300 text-base" />
               Angular
             </a>
           </li>
@@ -291,7 +285,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fab fa-js-square mr-2 text-blueGray-300 text-base"></i>
+              <i class="fab fa-js-square mr-2 text-blueGray-300 text-base" />
               Javascript
             </a>
           </li>
@@ -302,7 +296,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fab fa-react mr-2 text-blueGray-300 text-base"></i>
+              <i class="fab fa-react mr-2 text-blueGray-300 text-base" />
               NextJS
             </a>
           </li>
@@ -313,7 +307,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fab fa-react mr-2 text-blueGray-300 text-base"></i>
+              <i class="fab fa-react mr-2 text-blueGray-300 text-base" />
               React
             </a>
           </li>
@@ -324,7 +318,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fas fa-link mr-2 text-blueGray-300 text-base"></i>
+              <i class="fas fa-link mr-2 text-blueGray-300 text-base" />
               Svelte
             </a>
           </li>
@@ -335,7 +329,7 @@
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i class="fab fa-vuejs mr-2 text-blueGray-300 text-base"></i>
+              <i class="fab fa-vuejs mr-2 text-blueGray-300 text-base" />
               VueJS
             </a>
           </li>
@@ -347,23 +341,23 @@
 ); }
 
 <script>
-import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
-import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
+import NotificationDropdown from '@/components/Dropdowns/NotificationDropdown.vue'
+import UserDropdown from '@/components/Dropdowns/UserDropdown.vue'
 
 export default {
-  data() {
-    return {
-      collapseShow: "hidden",
-    };
-  },
-  methods: {
-    toggleCollapseShow: function (classes) {
-      this.collapseShow = classes;
-    },
-  },
   components: {
     NotificationDropdown,
-    UserDropdown,
+    UserDropdown
   },
-};
+  data () {
+    return {
+      collapseShow: 'hidden'
+    }
+  },
+  methods: {
+    toggleCollapseShow (classes) {
+      this.collapseShow = classes
+    }
+  }
+}
 </script>

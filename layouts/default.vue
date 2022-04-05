@@ -3,7 +3,7 @@
     <sidebar />
     <div class="relative md:ml-64 bg-blueGray-100">
       <admin-navbar />
-      <div class="px-4 md:px-10 mx-auto w-full -m-24">
+      <div class="px-4 md:px-10 mx-auto pt-20 w-full bg-emerald-500">
         <Nuxt />
         <footer-admin />
       </div>
@@ -11,15 +11,15 @@
   </div>
 </template>
 <script>
-import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
-import Sidebar from "@/components/Sidebar/Sidebar.vue";
-import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
+import AdminNavbar from '@/components/Navbars/AdminNavbar.vue'
+import Sidebar from '@/components/Sidebar/Sidebar.vue'
+import FooterAdmin from '@/components/Footers/FooterAdmin.vue'
 export default {
-  name: "admin-layout",
+  name: 'AdminLayout',
   components: {
     AdminNavbar,
     Sidebar,
-    FooterAdmin,
-  },
-};
+    FooterAdmin
+  }
+}
 </script>
