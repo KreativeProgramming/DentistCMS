@@ -3,7 +3,7 @@
     <sidebar />
     <div class="relative md:ml-64 bg-blueGray-100">
       <admin-navbar />
-      <div class="px-4 md:px-10 mx-auto pt-20 w-full bg-emerald-500">
+      <div class="px-4 md:px-10 mx-auto pt-20 w-full">
         <Nuxt />
         <footer-admin />
       </div>

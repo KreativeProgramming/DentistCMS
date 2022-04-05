@@ -12,11 +12,19 @@
 import CardTable from '@/components/Cards/CardTable.vue'
 
 export default {
+  name: 'Dashboard',
   components: {
     CardTable
   },
   head: {
-    title: 'Dashboard'
+    title: 'Dashboard',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Home page description'
+      }
+    ]
   }
 }
 </script>
